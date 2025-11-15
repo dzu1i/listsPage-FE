@@ -50,10 +50,9 @@
 .icon-done{ background: var(--ok); }
 .icon-idle{ background: rgba(255,255,255,.6); color:#1f2b1f; }
 
-/* members */
 .members-box{
   background: rgba(255,255,255,.7);
-  border-radius:12px; padding:10px 12px; margin-bottom:10px;
+  border-radius:12px; padding:10px ; margin-bottom:10px;
   border:1px solid #d8e7d8;
 }
 .members-header{
@@ -89,21 +88,49 @@
   background:#c37070; color:#fff; font-size:13px; cursor:pointer;
 }
 
-/* filter + add item */
 .filter-row{
-  display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; margin-top:6px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:8px;
+  margin-top:6px;
+  gap: 12px;
   font-size:14px;
 }
-.filter-buttons button{
-  border:none; padding:4px 10px; border-radius:999px; font-size:13px; cursor:pointer;
-  background:transparent; color:var(--muted);
+
+.filter-group{
+  display:flex;
+  align-items:center;
+  gap:6px;
 }
+
+.filter-label{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.filter-buttons{
+  display:flex;
+  gap:6px;
+}
+
+.filter-buttons button{
+  border:none;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:13px;
+  cursor:pointer;
+  background:transparent;
+  color:var(--muted);
+}
+
 .filter-buttons button.active{
-  background:#dbeadb; color:#223522;
+  background:#dbeadb;
+  color:#223522;
 }
 
 .add-item-row{
-  display:flex; gap:8px; margin-bottom:10px; margin-top:4px;
+  display:flex; gap:8px; margin-bottom:10px; margin-top:4px; padding:0 8px;
 }
 .add-item-row input{
   padding:6px 8px; border-radius:8px; border:1px solid #b6c9b6;
@@ -113,7 +140,6 @@
   padding:6px 10px; border-radius:8px; border:none; background:#4d6a4d; color:#fff; font-weight:600; cursor:pointer;
 }
 
-/* footer buttons */
 .footer-actions{
   position:absolute; left:16px; right:16px; bottom:16px;
   display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;

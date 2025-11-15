@@ -21,10 +21,25 @@ export default function ItemRow({
 }: Props) {
   const { id, name, qty, done } = item;
 
+  const handleRowClick = () => {
+    if (!edit) {
+      onToggle(id);
+    }
+  };
+
+  const handleCheckboxChange = (e: any) => {
+    e.stopPropagation();
+    onToggle(id);
+  };
+
   return (
-    <div className={`row ${done ? "done" : ""}`}>
+    <div className={`row ${done ? "done" : ""}`} onClick={handleRowClick}>
       <label className="check">
-        <input type="checkbox" checked={done} onChange={() => onToggle(id)} />
+        <input
+          type="checkbox"
+          checked={done}
+          onChange={handleCheckboxChange}
+        />
         <span />
       </label>
 
@@ -51,7 +66,10 @@ export default function ItemRow({
       {edit && isOwner && (
         <button
           className="remove-btn"
-          onClick={() => onRemove(id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove(id);
+          }}
           aria-label="Remove item"
         >
           ×

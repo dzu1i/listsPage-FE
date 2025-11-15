@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/ListDetail.css";
 import ItemList, { Item } from "../components/ItemList";
@@ -51,7 +51,10 @@ export default function ListDetailPage() {
   const [list, setList] = useState<ShoppingList>(structuredClone(base));
   const [backup, setBackup] = useState<ShoppingList>(structuredClone(base)); // for Cancel
   const [edit, setEdit] = useState(false);
+
   const [filter, setFilter] = useState<"all" | "active">("all");
+  const [prevFilter, setPrevFilter] = useState<"all" | "active">("all");
+  const [sortMode, setSortMode] = useState<"default" | "az">("default");
 
   const [newItemName, setNewItemName] = useState("");
   const [newItemQty, setNewItemQty] = useState("");
@@ -63,10 +66,26 @@ export default function ListDetailPage() {
   const allDone = useMemo(() => list.items.every((i) => i.done), [list.items]);
   const dateStr = new Date(list.createdAt).toLocaleDateString("cs-CZ");
 
-  const visibleItems = useMemo(
-    () => (filter === "all" ? list.items : list.items.filter((i) => !i.done)),
-    [list.items, filter]
-  );
+  // visible items = filter (active/all) + sort + active-first ordering
+  const visibleItems = useMemo(() => {
+    let items = [...list.items];
+
+    let active = items.filter((i) => !i.done);
+    let doneItems = items.filter((i) => i.done);
+
+    if (filter === "active") {
+      doneItems = [];
+    }
+
+    const collator = new Intl.Collator("cs-CZ", { sensitivity: "base" });
+
+    if (sortMode === "az") {
+      active = [...active].sort((a, b) => collator.compare(a.name, b.name));
+      doneItems = [...doneItems].sort((a, b) => collator.compare(a.name, b.name));
+    }
+
+    return [...active, ...doneItems];
+  }, [list.items, filter, sortMode]);
 
   const toggleItem = (id: string) =>
     setList((prev) => ({
@@ -94,16 +113,20 @@ export default function ListDetailPage() {
   // ---- Edit / Done / Cancel ----
   const handleEdit = () => {
     setBackup(structuredClone(list));
+    setPrevFilter(filter); // remember current filter
+    setFilter("all");      // show all items while editing
     setEdit(true);
   };
 
   const handleDone = () => {
-    setEdit(false); // list already contains edits
+    setEdit(false);
+    setFilter(prevFilter); // restore what user had
   };
 
   const handleCancel = () => {
     setList(structuredClone(backup));
     setEdit(false);
+    setFilter(prevFilter); // restore previous filter
   };
 
   // ---- Items: add / remove ----
@@ -243,25 +266,47 @@ export default function ListDetailPage() {
             )}
           </div>
 
-          {/* filter: ONLY in normal view (not edit) */}
+          {/* filter + sort: ONLY in normal view */}
           {!edit && (
             <div className="filter-row">
-              <span>Items:</span>
-              <div className="filter-buttons">
-                <button
-                  type="button"
-                  className={filter === "active" ? "active" : ""}
-                  onClick={() => setFilter("active")}
-                >
-                  Active only
-                </button>
-                <button
-                  type="button"
-                  className={filter === "all" ? "active" : ""}
-                  onClick={() => setFilter("all")}
-                >
-                  All items
-                </button>
+              <div className="filter-group">
+                <span className="filter-label">Show:</span>
+                <div className="filter-buttons">
+                  <button
+                    type="button"
+                    className={filter === "active" ? "active" : ""}
+                    onClick={() => setFilter("active")}
+                  >
+                    Active only
+                  </button>
+                  <button
+                    type="button"
+                    className={filter === "all" ? "active" : ""}
+                    onClick={() => setFilter("all")}
+                  >
+                    All items
+                  </button>
+                </div>
+              </div>
+
+              <div className="filter-group">
+                <span className="filter-label">Sort:</span>
+                <div className="filter-buttons">
+                  <button
+                    type="button"
+                    className={sortMode === "default" ? "active" : ""}
+                    onClick={() => setSortMode("default")}
+                  >
+                    Default
+                  </button>
+                  <button
+                    type="button"
+                    className={sortMode === "az" ? "active" : ""}
+                    onClick={() => setSortMode("az")}
+                  >
+                    A–Z
+                  </button>
+                </div>
               </div>
             </div>
           )}
