@@ -95,22 +95,22 @@
 }
 
 .lists-tile {
+  position: relative;
   display: flex;
-  align-items: stretch;
-  gap: 8px;
+  align-items: center;
 }
 
 .lists-tile-button {
-  flex: 1;
+  width: 100%;
   border: none;
   border-radius: 18px;
-  padding: 10px 14px;
+  padding: 10px 48px 10px 14px;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.9),
-    rgba(231, 244, 232, 0.95)
+    rgba(255, 255, 255, 0.96),
+    rgba(235, 246, 236, 0.98)
   );
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   text-align: left;
   transition: transform 0.12s ease, box-shadow 0.12s ease,
@@ -119,11 +119,11 @@
 
 .lists-tile-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.95),
-    rgba(219, 236, 219, 0.98)
+    rgba(255, 255, 255, 0.98),
+    rgba(222, 239, 224, 0.99)
   );
 }
 
@@ -164,6 +164,10 @@
 }
 
 .lists-tile-delete {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   border: none;
   border-radius: 999px;
   width: 28px;
@@ -177,7 +181,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   transition:
     background 0.15s ease,
     box-shadow 0.15s ease,
@@ -185,7 +188,8 @@
 }
 
 .lists-tile-delete:hover {
-  transform: translateY(-1px) scale(1.05);
+  background: #a55353;
+  transform: translateY(-50%) scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 

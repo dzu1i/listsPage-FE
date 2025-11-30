@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/ListDetailPage.css";
 import ItemList, { Item } from "../components/ItemList";
-import ListHeader from "../components/ListHeader";
 import ActionButtons from "../components/ActionButtons";
 
 export type Member = {
@@ -49,7 +48,7 @@ export default function ListDetailPage() {
   const base = LISTS[listId ?? "groceries"] ?? LISTS.groceries;
 
   const [list, setList] = useState<ShoppingList>(structuredClone(base));
-  const [backup, setBackup] = useState<ShoppingList>(structuredClone(base)); // for Cancel
+  const [backup, setBackup] = useState<ShoppingList>(structuredClone(base));
   const [edit, setEdit] = useState(false);
 
   const [filter, setFilter] = useState<"all" | "active">("all");
@@ -113,20 +112,20 @@ export default function ListDetailPage() {
   // ---- Edit / Done / Cancel ----
   const handleEdit = () => {
     setBackup(structuredClone(list));
-    setPrevFilter(filter); // remember current filter
-    setFilter("all");      // show all items while editing
+    setPrevFilter(filter);
+    setFilter("all");
     setEdit(true);
   };
 
   const handleDone = () => {
     setEdit(false);
-    setFilter(prevFilter); // restore what user had
+    setFilter(prevFilter);
   };
 
   const handleCancel = () => {
     setList(structuredClone(backup));
     setEdit(false);
-    setFilter(prevFilter); // restore previous filter
+    setFilter(prevFilter);
   };
 
   // ---- Items: add / remove ----
@@ -172,7 +171,7 @@ export default function ListDetailPage() {
 
   const handleRemoveMember = (id: string) => {
     if (!isOwner) return;
-    if (id === list.ownerId) return; // cannot remove owner
+    if (id === list.ownerId) return;
     setList((prev) => ({
       ...prev,
       members: prev.members.filter((m) => m.id !== id),
@@ -217,15 +216,21 @@ export default function ListDetailPage() {
           ← Back
         </button>
 
-        <ListHeader
-          title={list.title}
-          dateStr={dateStr}
-          allDone={allDone}
-          onToggleAll={toggleAll}
-          edit={edit}
-          isOwner={isOwner}
-          onTitleChange={handleTitleChange}
-        />
+        <div className="detail-header">
+          <div className="detail-header-main">
+            {edit && isOwner ? (
+              <input
+                className="title-input"
+                value={list.title}
+                onChange={(e) => handleTitleChange(e.target.value)}
+              />
+            ) : (
+              <h1 className="title">{list.title}</h1>
+            )}
+
+            <div className="date">{dateStr}</div>
+          </div>
+        </div>
 
         <div className="detail-panel">
           {/* members + role */}
@@ -274,23 +279,34 @@ export default function ListDetailPage() {
 
           {!edit && (
             <div className="filter-row">
-              <div className="filter-group">
-                <span className="filter-label">Show:</span>
-                <div className="filter-buttons">
-                  <button
-                    type="button"
-                    className={filter === "active" ? "active" : ""}
-                    onClick={() => setFilter("active")}
-                  >
-                    Active only
-                  </button>
-                  <button
-                    type="button"
-                    className={filter === "all" ? "active" : ""}
-                    onClick={() => setFilter("all")}
-                  >
-                    All items
-                  </button>
+              <div className="filter-left">
+                <button
+                  type="button"
+                  className={`toggle-all-square ${allDone ? "checked" : ""}`}
+                  onClick={toggleAll}
+                  title="Mark all as done/undone"
+                >
+                  All
+                </button>
+
+                <div className="filter-group">
+                  <span className="filter-label">Show:</span>
+                  <div className="filter-buttons">
+                    <button
+                      type="button"
+                      className={filter === "active" ? "active" : ""}
+                      onClick={() => setFilter("active")}
+                    >
+                      Active only
+                    </button>
+                    <button
+                      type="button"
+                      className={filter === "all" ? "active" : ""}
+                      onClick={() => setFilter("all")}
+                    >
+                      All items
+                    </button>
+                  </div>
                 </div>
               </div>
 

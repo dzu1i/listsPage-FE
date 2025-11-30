@@ -65,12 +65,33 @@
   margin: 5px 0px 0px 5px;
 }
 
-.icon-btn{
-  width:46px; height:46px; border-radius:999px; border:none; cursor:pointer;
-  box-shadow:0 2px 0 rgba(0,0,0,.08); color:#fff; font-weight:800;
+.toggle-all-square{
+  width:32px;
+  height:32px;
+  border-radius:8px;
+  border:2px solid var(--accent);
+  background:#fff;
+  color:var(--accent);
+  font-size:12px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 2px 4px rgba(0,0,0,.08);
+  transition:background .15s ease, color .15s ease,
+           box-shadow .15s ease, transform .12s ease;
 }
-.icon-done{ background: var(--ok); }
-.icon-idle{ background: rgba(255,255,255,.6); color:#1f2b1f; }
+
+.toggle-all-square.checked{
+  background:var(--accent);
+  color:#fff;
+}
+
+.toggle-all-square:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(0,0,0,.16);
+}
 
 .members-box{
   background: rgba(255,255,255,.7);
@@ -116,8 +137,15 @@
   justify-content:space-between;
   margin-bottom:8px;
   margin-top:6px;
-  gap: 12px;
+  gap:16px;
   font-size:14px;
+  margin-left: 12px;
+}
+
+.filter-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
 .filter-group{
@@ -128,7 +156,9 @@
 
 .filter-label{
   font-size:13px;
-  color:var(--muted);
+  color:var(--text);
+  font-weight: 600;
+  margin-left: 16px;
 }
 
 .filter-buttons{
@@ -217,7 +247,6 @@
   background:#a65353;
 }
 
-
 .back-btn{
   border:none;
   background:rgba(255,255,255,.9);
@@ -266,4 +295,16 @@
   background:#c7ddc7;
   transform:translateY(-0.5px);
   box-shadow:0 6px 16px rgba(0,0,0,.12);
+}
+
+.detail-header {
+  display: flex;
+  align-items: flex-start;
+  margin-left: 16px;
+  margin-bottom: 12px;
+}
+
+.detail-header-main {
+  display: flex;
+  flex-direction: column;
 }
