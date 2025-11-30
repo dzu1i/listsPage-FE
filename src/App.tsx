@@ -1,23 +1,19 @@
-import { Routes, Route, Link } from "react-router-dom";
-import "./App.css";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import LoginPage from "./lists/LoginPage";
+import ListsPage from "./lists/ListsPage";
 import ListDetailPage from "./lists/ListDetailPage";
 
-export default function App() {
+const App: React.FC = () => {
   return (
-    <div className="page">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="card">
-              <h1>Shopping Lists</h1>
-              <p>Demo: open the sample list.</p>
-              <Link className="btn" to="/lists/groceries">Open “Groceries”</Link>
-            </div>
-          }
-        />
-        <Route path="/lists/:listId" element={<ListDetailPage />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/lists" element={<ListsPage />} />
+      <Route path="/lists/:listId" element={<ListDetailPage />} />
+      {/* fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
-}
+};
+
+export default App;

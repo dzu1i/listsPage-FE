@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "../styles/ListDetail.css";
+import "../styles/ListDetailPage.css";
 import ItemList, { Item } from "../components/ItemList";
 import ListHeader from "../components/ListHeader";
 import ActionButtons from "../components/ActionButtons";
@@ -187,17 +187,17 @@ export default function ListDetailPage() {
       ...prev,
       members: prev.members.filter((m) => m.id !== CURRENT_USER_ID),
     }));
-    navigate("/");
+    navigate("/lists");
   };
 
   // ---- Archive / delete ----
   const handleDelete = () => {
-    if (window.confirm("Delete this list? (demo)")) navigate("/");
+    if (window.confirm("Delete this list? (demo)")) navigate("/lists");
   };
 
   const handleArchive = () => {
     alert("Archived (demo). Data se po reloadu vrátí.");
-    navigate("/");
+    navigate("/lists");
   };
 
   const roleLabel = isOwner
@@ -209,6 +209,14 @@ export default function ListDetailPage() {
   return (
     <div className="detail-page">
       <div className="detail-card">
+        <button
+          className="back-chip"
+          type="button"
+          onClick={() => navigate("/lists")}
+        >
+          ← Back
+        </button>
+
         <ListHeader
           title={list.title}
           dateStr={dateStr}
@@ -246,7 +254,6 @@ export default function ListDetailPage() {
               ))}
             </div>
 
-            {/* add member ONLY IN EDIT + owner */}
             {edit && isOwner && (
               <form className="members-add" onSubmit={handleAddMember}>
                 <input
@@ -258,7 +265,6 @@ export default function ListDetailPage() {
               </form>
             )}
 
-            {/* leave list – available in both modes for member (non-owner) */}
             {!isOwner && isMember && (
               <button className="leave-btn" onClick={handleLeaveList}>
                 Leave list
@@ -266,7 +272,6 @@ export default function ListDetailPage() {
             )}
           </div>
 
-          {/* filter + sort: ONLY in normal view */}
           {!edit && (
             <div className="filter-row">
               <div className="filter-group">
@@ -311,7 +316,6 @@ export default function ListDetailPage() {
             </div>
           )}
 
-          {/* add item (owner + edit) */}
           {isOwner && edit && (
             <form className="add-item-row" onSubmit={handleAddItem}>
               <input
@@ -328,7 +332,6 @@ export default function ListDetailPage() {
             </form>
           )}
 
-          {/* items */}
           <ItemList
             items={visibleItems}
             edit={edit}
